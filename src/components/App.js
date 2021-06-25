@@ -3,8 +3,11 @@ import { connect } from 'react-redux'
 import { handleInitialData } from '../actions/shared'
 import LoadingScreen from 'react-loading-screen'
 import logo from '../wouldyou.png'
-import QuestionsList from './Questions/QuestionsList'
-// import Login from './Login/Login'
+import QuestionsList from './QuestionsList'
+import Login from './Login/Login'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import QuestionPage from './QuestionPage'
+import QuestionForm from './QuestionForm'
 
 class App extends Component {
   componentDidMount () {
@@ -22,7 +25,7 @@ class App extends Component {
          text='Loading...'>
            {this.props.loading === true
              ? null
-             : <QuestionsList />}
+             : <QuestionForm />}
         </LoadingScreen>
       </div>
     )

@@ -1,6 +1,6 @@
-import { getQuestions } from './questions'
-import { getUsers } from './users'
-import { getData } from '../utils/api'
+import { getQuestions, saveVote } from './questions'
+import { getUsers, saveAnswer } from './users'
+import { getData, saveQuestionAnswer } from '../utils/api'
 import { setAuthedUser } from './authedUser'
 
 export function handleInitialData () {
@@ -11,5 +11,16 @@ export function handleInitialData () {
         dispatch(getQuestions(questions))
         dispatch(setAuthedUser('sarahedo')) // this will probably need to change, I will have a login page first
       })
+  }
+}
+
+export function handleSaveAnswer (info) {
+  return (dispatch) => {
+    return saveQuestionAnswer(info).then(() => {
+      dispatch(saveAnswer(info))
+      dispatch(saveVote(info))
+    }).catch((e) => {
+      console.warn('Error in saving answer: ', e)
+    })
   }
 }

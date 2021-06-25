@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './main.scoped.css'
 import './util.scoped.css'
 import { connect } from 'react-redux'
+import { setAuthedUser } from '../../actions/authedUser'
 
 class Login extends Component {
     state = {
@@ -16,7 +17,7 @@ class Login extends Component {
 
     verifyuser = () => {
       if (this.state.val in this.props.users) {
-        // dispatch set authed user
+        this.props.dispatch(setAuthedUser(this.state.val))
         // add redirect to home page
       } else {
         alert('This user does not exist')
