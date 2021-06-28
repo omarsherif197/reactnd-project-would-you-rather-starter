@@ -3,6 +3,7 @@ import './main.scoped.css'
 import './util.scoped.css'
 import { connect } from 'react-redux'
 import { setAuthedUser } from '../../actions/authedUser'
+import { withRouter } from 'react-router-dom'
 
 class Login extends Component {
     state = {
@@ -15,10 +16,11 @@ class Login extends Component {
       }))
     }
 
-    verifyuser = () => {
+    verifyuser = (e) => {
+      e.preventDefault()
       if (this.state.val in this.props.users) {
         this.props.dispatch(setAuthedUser(this.state.val))
-        // add redirect to home page
+        this.props.history.push('/')
       } else {
         alert('This user does not exist')
         this.setState(() => ({
@@ -48,13 +50,13 @@ class Login extends Component {
                 <div className="container-login100-form-btn">
                     <div className="wrap-login100-form-btn">
                         <div className="login100-form-bgbtn"></div>
-                        <button className="login100-form-btn" onClick={this.verifyuser}>
+                        <button className="login100-form-btn" onClick={(e) => { this.verifyuser(e) }}>
                             Login
                         </button>
                     </div>
                 </div>
 
-                <div className="text-center p-t-115">
+                {/* <div className="text-center p-t-115">
                     <span className="txt1">
                         Don’t have an account?
                     </span>
@@ -62,7 +64,7 @@ class Login extends Component {
                     <a className="txt2" href="#">
                         Sign Up
                     </a>
-                </div>
+                </div> */}
             </form>
         </div>
     </div>
@@ -77,4 +79,4 @@ function mapStateToProps ({ users }) {
   }
 }
 
-export default connect(mapStateToProps)(Login)
+export default withRouter(connect(mapStateToProps)(Login))

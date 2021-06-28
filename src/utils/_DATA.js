@@ -25,7 +25,7 @@ let users = {
   johndoe: {
     id: 'johndoe',
     name: 'John Doe',
-    avatarURL: '64_3.png',
+    avatarURL: '64_5.png',
     answers: {
       'xj352vofupe1dqz9emx13r': 'optionOne',
       'vthrdm985a262al8qx3do': 'optionTwo',

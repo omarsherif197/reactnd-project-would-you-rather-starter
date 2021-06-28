@@ -119,11 +119,12 @@ class QuestionPage extends Component {
     }
 }
 
-function mapStateToProps ({ users, questions, authedUser }) {
+function mapStateToProps ({ users, questions, authedUser }, props) {
+  const { id } = props.match.params
   return {
     users: users,
     authedUser: authedUser,
-    question: questions['vthrdm985a262al8qx3do'] // change this to take in questionid prop
+    question: questions[id] // change this to take in questionid prop
   }
 }
 

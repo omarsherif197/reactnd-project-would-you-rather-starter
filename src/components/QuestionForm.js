@@ -3,6 +3,8 @@ import Grid from '@material-ui/core/Grid'
 import { Typography, Button, Backdrop } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import { handleNewQuestion } from '../actions/questions'
+import { connect } from 'react-redux'
 
 class QuestionForm extends Component {
     state= {
@@ -25,7 +27,7 @@ class QuestionForm extends Component {
       }))
     }
 
-    submit = () => {
+    handleSubmit = () => {
       const errorone = this.state.optionOne === ''
       const errortwo = this.state.optionTwo === ''
       if (errorone || errortwo) {
@@ -34,10 +36,20 @@ class QuestionForm extends Component {
           errorTwo: errortwo
         }))
       } else {
+        const { optionOne, optionTwo } = this.state
         this.setState(() => ({
           loading: true
-        }))
-        // dispatch to make new question as callback
+        }), () => {
+          this.props.dispatch(handleNewQuestion({ optionOneText: optionOne, optionTwoText: optionTwo })).then(() => {
+            this.setState(() => ({
+              optionOne: '',
+              optionTwo: '',
+              errorone: false,
+              errortwo: false,
+              loading: false
+            }))
+          })
+        })
       }
     }
 
@@ -88,7 +100,7 @@ class QuestionForm extends Component {
                     />
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '5px' }}>
-                    <Button onClick={this.submit} variant="contained" color='primary' style={{ marginTop: '10px', marginBottom: '10px', float: 'center', justifyContent: 'center', width: '50%' }}>
+                    <Button onClick={this.handleSubmit} variant="contained" color='primary' style={{ marginTop: '10px', marginBottom: '10px', float: 'center', justifyContent: 'center', width: '50%' }}>
                         Submit
                     </Button>
                     <Backdrop open={this.state.loading} style={{ color: '#fff', zIndex: 1201 }}>
@@ -103,4 +115,4 @@ class QuestionForm extends Component {
     }
 }
 
-export default QuestionForm
+export default connect()(QuestionForm)

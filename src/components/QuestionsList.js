@@ -22,7 +22,7 @@ class QuestionsList extends Component {
                   >
                     {Object.keys(this.props.questions).map((question) => {
                       if ((question in userQuestions) === true) {
-                        return <Question questionid={question}/>
+                        return <Question questionid={question} key={question}/>
                       }
                       return null
                     })
@@ -38,7 +38,7 @@ class QuestionsList extends Component {
                   >
                   {Object.keys(this.props.questions).map((question) => {
                     if ((question in userQuestions) === false) {
-                      return <Question questionid={question}/>
+                      return <Question questionid={question} key={question}/>
                     }
                     return null
                   })
@@ -49,7 +49,6 @@ class QuestionsList extends Component {
                 </Col>
               </Row>
             </Container>
-
     )
   }
 }

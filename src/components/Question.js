@@ -7,6 +7,7 @@ import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography'
 import { Box } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
+import { Link as RouterLink } from 'react-router-dom'
 
 class Question extends Component {
   render () {
@@ -31,7 +32,7 @@ class Question extends Component {
           <Box border={0} borderRadius={16} style= {{ background: '#e8eaed' }}>
           <Typography variant= "body1" component="div" style={{ textAlign: 'center', padding: '5px' }}>{this.props.question.optionTwo.text}</Typography>
           </Box>
-          <Button variant="contained" color='primary' style={{ marginTop: '10px', marginBottom: '10px', float: 'right' }}>View poll</Button>
+          <Button variant="contained" component={RouterLink} to={`/questions/${this.props.questionid}`} color='primary' style={{ marginTop: '10px', marginBottom: '10px', float: 'right' }}>View poll</Button>
         </CardContent>
 
       </Card>
