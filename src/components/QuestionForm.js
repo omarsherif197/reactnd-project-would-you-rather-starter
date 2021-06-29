@@ -3,8 +3,9 @@ import Grid from '@material-ui/core/Grid'
 import { Typography, Button, Backdrop } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import { handleNewQuestion } from '../actions/questions'
+import { handleNewQuestion } from '../actions/shared'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 class QuestionForm extends Component {
     state= {
@@ -48,6 +49,7 @@ class QuestionForm extends Component {
               errortwo: false,
               loading: false
             }))
+            this.props.history.push('/')
           })
         })
       }
@@ -115,4 +117,4 @@ class QuestionForm extends Component {
     }
 }
 
-export default connect()(QuestionForm)
+export default withRouter(connect()(QuestionForm))

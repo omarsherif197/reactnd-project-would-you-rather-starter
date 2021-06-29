@@ -9,6 +9,27 @@ import { Box } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import { Link as RouterLink } from 'react-router-dom'
 
+function timeConverter (timeStamp) {
+  const a = new Date(timeStamp)
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const year = a.getFullYear()
+  const month = months[a.getMonth()]
+  const date = a.getDate().toLocaleString('en-US', {
+    minimumIntegerDigits: 2,
+    useGrouping: false
+  })
+  const hour = a.getHours().toLocaleString('en-US', {
+    minimumIntegerDigits: 2,
+    useGrouping: false
+  })
+  const min = a.getMinutes().toLocaleString('en-US', {
+    minimumIntegerDigits: 2,
+    useGrouping: false
+  })
+  const time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min
+  return time
+}
+
 class Question extends Component {
   render () {
     const img = this.props.users[this.props.question.author].avatarURL
@@ -21,6 +42,7 @@ class Question extends Component {
           <Avatar src={process.env.PUBLIC_URL + '/avatars/' + img } />
         }
         title={this.props.users[this.props.question.author].name + ' asks...'}
+        subheader={timeConverter(this.props.question.timestamp)}
         style = {{ background: '#e8eaed', fontSize: 'large' }}
         />
         <CardContent>

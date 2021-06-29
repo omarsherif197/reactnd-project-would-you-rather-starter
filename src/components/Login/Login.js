@@ -20,7 +20,7 @@ class Login extends Component {
       e.preventDefault()
       if (this.state.val in this.props.users) {
         this.props.dispatch(setAuthedUser(this.state.val))
-        this.props.history.push('/')
+        this.props.history.push(this.props.location.state.referrer)
       } else {
         alert('This user does not exist')
         this.setState(() => ({

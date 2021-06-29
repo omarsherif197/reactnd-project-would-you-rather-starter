@@ -7,12 +7,31 @@ import Grid from '@material-ui/core/Grid'
 class QuestionsList extends Component {
   render () {
     const userQuestions = this.props.users[this.props.authedUser].answers
+    const sortedQuestions = Object.values(this.props.questions).sort(function (a, b) {
+      return b.timestamp - a.timestamp
+    })
     return (
 
             <Container>
               <Row>
                 <Col>
                 <Tabs id="controlled-tab">
+                <Tab eventKey="unanswered" title="Unanswered Questions">
+                  <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="flex-start"
+                  >
+                  {sortedQuestions.map((question) => {
+                    if ((question.id in userQuestions) === false) {
+                      return <Question questionid={question.id} key={question.id}/>
+                    }
+                    return null
+                  })
+                  }
+                  </Grid>
+                  </Tab>
                   <Tab eventKey="answered" title="Answered Questions" >
                   <Grid
                     container
@@ -20,30 +39,14 @@ class QuestionsList extends Component {
                     justify="center"
                     alignItems="flex-start"
                   >
-                    {Object.keys(this.props.questions).map((question) => {
-                      if ((question in userQuestions) === true) {
-                        return <Question questionid={question} key={question}/>
+                    {sortedQuestions.map((question) => {
+                      if ((question.id in userQuestions) === true) {
+                        return <Question questionid={question.id} key={question.id}/>
                       }
                       return null
                     })
                     }
                     </Grid>
-                  </Tab>
-                  <Tab eventKey="unanswered" title="Unanswered Questions">
-                  <Grid
-                    container
-                    direction="row"
-                    justify="center"
-                    alignItems="flex-start"
-                  >
-                  {Object.keys(this.props.questions).map((question) => {
-                    if ((question in userQuestions) === false) {
-                      return <Question questionid={question} key={question}/>
-                    }
-                    return null
-                  })
-                  }
-                  </Grid>
                   </Tab>
                 </Tabs>
                 </Col>

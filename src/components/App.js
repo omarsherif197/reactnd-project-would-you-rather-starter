@@ -27,18 +27,34 @@ class App extends Component {
          logoSrc= {logo}
          text='Loading...'>
            {this.props.loading === true
-             ? null
+             ? <div></div>
              : <div>
                <Navibar />
                <Switch>
                <Route path='/' exact
-                render={() => { return this.props.authedUser !== null ? <QuestionsList/> : <Redirect to='/login'/> }}/>
+                render={(routeInfo) => {
+                  return this.props.authedUser !== null
+                    ? <QuestionsList/>
+                    : <Redirect to={{ pathname: '/login', state: { referrer: routeInfo.location } }}/>
+                }}/>
                <Route path='/add'
-                render={() => { return this.props.authedUser !== null ? <QuestionForm/> : <Redirect to='/login'/> }}/>
+                render={(routeInfo) => {
+                  return this.props.authedUser !== null
+                    ? <QuestionForm/>
+                    : <Redirect to={{ pathname: '/login', state: { referrer: routeInfo.location } }}/>
+                }}/>
                <Route path='/leaderboard'
-               render={() => { return this.props.authedUser !== null ? <UsersList/> : <Redirect to='/login'/> }}/>
+               render={(routeInfo) => {
+                 return this.props.authedUser !== null
+                   ? <UsersList/>
+                   : <Redirect to={{ pathname: '/login', state: { referrer: routeInfo.location } }}/>
+               }}/>
                <Route path='/questions/:id'
-               render={(match) => { return this.props.authedUser !== null ? <QuestionPage {...match}/> : <Redirect to='/login'/> }}/>
+               render={(routeInfo) => {
+                 return this.props.authedUser !== null
+                   ? <QuestionPage {...routeInfo}/>
+                   : <Redirect to={{ pathname: '/login', state: { referrer: routeInfo.location } }}/>
+               }}/>
                <Route path='/login' component={Login}/>
                </Switch>
                </div>}

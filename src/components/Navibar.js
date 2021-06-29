@@ -24,9 +24,18 @@ class Navibar extends Component {
             </LinkContainer>
             <Nav.Link onClick={() => { this.logout() }}>Log Out</Nav.Link>
           </Nav>
+          <Nav style= {{ display: 'flex', justifyContent: 'end' }}>
+            <Nav.Link disabled> {this.props.authedUser !== null ? ('Hello, ' + this.props.authedUser) : '' } </Nav.Link>
+          </Nav>
         </Navbar>
     )
   }
 }
 
-export default connect()(Navibar)
+function mapStateToProps ({ authedUser }) {
+  return {
+    authedUser
+  }
+}
+
+export default connect(mapStateToProps)(Navibar)
