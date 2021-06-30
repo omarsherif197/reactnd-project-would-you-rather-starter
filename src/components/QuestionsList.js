@@ -1,16 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import Question from './Question'
 import { Container, Row, Col, Tab, Tabs } from 'react-bootstrap'
 import Grid from '@material-ui/core/Grid'
 
-class QuestionsList extends Component {
-  render () {
-    const userQuestions = this.props.users[this.props.authedUser].answers
-    const sortedQuestions = Object.values(this.props.questions).sort(function (a, b) {
-      return b.timestamp - a.timestamp
-    })
-    return (
+function QuestionsList (props) {
+  const userQuestions = props.users[props.authedUser].answers
+  const sortedQuestions = Object.values(props.questions).sort(function (a, b) {
+    return b.timestamp - a.timestamp
+  })
+  return (
 
             <Container>
               <Row>
@@ -52,8 +51,7 @@ class QuestionsList extends Component {
                 </Col>
               </Row>
             </Container>
-    )
-  }
+  )
 }
 
 function mapStateToProps ({ questions, users, authedUser }) {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button'
 import Badge from '@material-ui/core/Badge'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { handleSaveAnswer } from '../actions/shared'
+import { Redirect } from 'react-router-dom'
 
 function CircularProgressWithLabel (props) {
   return (
@@ -34,40 +35,47 @@ function CircularProgressWithLabel (props) {
 }
 ;
 
-class QuestionPage extends Component {
-    answer = (option) => {
-      const { dispatch, authedUser, question } = this.props
-      dispatch(handleSaveAnswer({ authedUser, qid: question.id, answer: option }))
-    }
+function QuestionPage (props) {
+  if (!props.question) {
+    return (
+      <Redirect to='/404'/>
+    )
+  }
 
-    notAnswered = () => (
+  const answer = (option) => {
+    const { dispatch, authedUser, question } = props
+    dispatch(handleSaveAnswer({ authedUser, qid: question.id, answer: option }))
+  }
+
+  const notAnswered = () => (
         <CardContent>
               <Typography varsiant="h6" component="h6" style={{ padding: '10px', fontWeight: 'bold', color: 'black' }}>Would you rather </Typography>
               <Box border={0} borderRadius={16} style= {{ display: 'flex', justifyContent: 'center' }}>
-                <Button onClick={() => { this.answer('optionOne') }} style={{ borderRadius: '12px', background: '#e8eaed', width: '300px', textTransform: 'lowercase' }}>
-                    <Typography variant= "body1" component="div" style={{ textAlign: 'center', padding: '5px' }}>{this.props.question.optionOne.text}</Typography>
+                <Button onClick={() => { answer('optionOne') }} style={{ borderRadius: '12px', background: '#e8eaed', width: '300px', textTransform: 'lowercase' }}>
+                    <Typography variant= "body1" component="div" style={{ textAlign: 'center', padding: '5px' }}>{props.question.optionOne.text}</Typography>
                 </Button>
                </Box>
               <Typography variant= "body1" component="div" style={{ textAlign: 'center', fontWeight: 'bold', padding: '5px' }}>OR</Typography>
               <Box border={0} borderRadius={16} style= {{ display: 'flex', justifyContent: 'center' }}>
-                <Button onClick={() => { this.answer('optionTwo') }} style={{ borderRadius: '12px', background: '#e8eaed', width: '300px', textTransform: 'lowercase' }}>
-                    <Typography variant= "body1" component="div" style={{ textAlign: 'center', padding: '5px' }}>{this.props.question.optionTwo.text}</Typography>
+                <Button onClick={() => { answer('optionTwo') }} style={{ borderRadius: '12px', background: '#e8eaed', width: '300px', textTransform: 'lowercase' }}>
+                    <Typography variant= "body1" component="div" style={{ textAlign: 'center', padding: '5px' }}>{props.question.optionTwo.text}</Typography>
                 </Button>
               </Box>
             </CardContent>
-    )
+  )
 
-    answered = (question, option) => {
-      const votesForOne = question.optionOne.votes.length
-      const votesForTwo = question.optionTwo.votes.length
-      const totalVotes = votesForOne + votesForTwo
-      return (
+  const answered = (question, option) => {
+    const votesForOne = question.optionOne.votes.length
+    const votesForTwo = question.optionTwo.votes.length
+    const totalVotes = votesForOne + votesForTwo
+
+    return (
         <CardContent>
               <Typography variant="h6" component="h6" style={{ padding: '10px', fontWeight: 'bold', color: 'black' }}>Would you rather </Typography>
               <Box border={0} borderRadius={16} style= {{ display: 'flex', justifyContent: 'center' }}>
                 <Badge color="secondary" badgeContent={option === 'optionOne' ? 'Your vote' : 0}>
                 <Button style={{ borderRadius: '12px', background: '#e8eaed', width: '300px', textTransform: 'lowercase' }} disabled>
-                    <Typography variant= "body1" component="div" style={{ textAlign: 'center', padding: '5px' }}>{this.props.question.optionOne.text}</Typography>
+                    <Typography variant= "body1" component="div" style={{ textAlign: 'center', padding: '5px' }}>{props.question.optionOne.text}</Typography>
                 </Button>
                 </Badge>
                </Box>
@@ -81,7 +89,7 @@ class QuestionPage extends Component {
               <Box border={0} borderRadius={16} style= {{ display: 'flex', justifyContent: 'center' }}>
                 <Badge color="secondary" badgeContent={option === 'optionTwo' ? 'Your vote' : 0}>
                 <Button style={{ borderRadius: '12px', background: '#e8eaed', width: '300px', textTransform: 'lowercase' }} disabled>
-                    <Typography variant= "body1" component="div" style={{ textAlign: 'center', padding: '5px' }}>{this.props.question.optionTwo.text}</Typography>
+                    <Typography variant= "body1" component="div" style={{ textAlign: 'center', padding: '5px' }}>{props.question.optionTwo.text}</Typography>
                 </Button>
                 </Badge>
               </Box>
@@ -92,31 +100,29 @@ class QuestionPage extends Component {
                <Typography variant= "body1" component="div" style={{ textAlign: 'center', padding: '1px' }}>{votesForTwo} out of {totalVotes} votes</Typography>
                </Box>
             </CardContent>
-      )
-    }
+    )
+  }
 
-    render () {
-      const img = this.props.users[this.props.question.author].avatarURL
-      const question = this.props.question.id
-      return (
+  const img = props.users[props.question.author].avatarURL
+  const question = props.question.id
+  return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Card style={{ width: '25rem' }}>
         <CardHeader
         avatar={
           <Avatar src={process.env.PUBLIC_URL + '/avatars/' + img } />
         }
-        title={this.props.users[this.props.question.author].name + ' asks...'}
+        title={props.users[props.question.author].name + ' asks...'}
         style = {{ background: '#e8eaed', fontSize: 'large' }}
         />
         {
-            Object.keys(this.props.users[this.props.authedUser].answers).includes(question)
-              ? this.answered(this.props.question, this.props.users[this.props.authedUser].answers[question])
-              : this.notAnswered()
+            Object.keys(props.users[props.authedUser].answers).includes(question)
+              ? answered(props.question, props.users[props.authedUser].answers[question])
+              : notAnswered()
         }
       </Card>
       </div>
-      )
-    }
+  )
 }
 
 function mapStateToProps ({ users, questions, authedUser }, props) {

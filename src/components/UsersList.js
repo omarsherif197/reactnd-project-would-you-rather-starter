@@ -1,14 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid'
 import User from './User'
 
-class UsersList extends Component {
-  render () {
-    const list = Object.values(this.props.users).sort(function (a, b) {
-      return (b.questions.length + Object.keys(b.answers).length) - (a.questions.length + Object.keys(a.answers).length)
-    })
-    return (
+function UsersList (props) {
+  const list = Object.values(props.users).sort(function (a, b) {
+    return (b.questions.length + Object.keys(b.answers).length) - (a.questions.length + Object.keys(a.answers).length)
+  })
+  return (
         <Grid
         container
         direction="column"
@@ -21,8 +20,7 @@ class UsersList extends Component {
           )
         })}
         </Grid>
-    )
-  }
+  )
 }
 
 function mapStateToProps ({ users }) {

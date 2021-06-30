@@ -11,6 +11,7 @@ import QuestionPage from './QuestionPage'
 import UsersList from './UsersList'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import Navibar from './Navibar'
+import NotFound from './NotFound'
 
 class App extends Component {
   componentDidMount () {
@@ -56,6 +57,8 @@ class App extends Component {
                    : <Redirect to={{ pathname: '/login', state: { referrer: routeInfo.location } }}/>
                }}/>
                <Route path='/login' component={Login}/>
+               <Route path='/404' render={() => (<NotFound/>)}/>
+               <Route component={NotFound} />
                </Switch>
                </div>}
         </LoadingScreen>
